@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="vp6242_force_sensor_soldering_lead">
+	<!--
+		J1   J2   J3   J4   J5   J6
+		160  120  160  160  120  360
+	   -160 -120   19 -160 -120 -360
+	-->
+  <xacro:macro name="mesh_origin">
+    <origin rpy="-1.570796 3.141592 0" xyz="0 0 0"/>
+  </xacro:macro>
+  <xacro:property name="mesh_path" value="package://vp6242_description/robot" />
+  <xacro:property name="mesh_scale" value="0.001 0.001 0.001" />
+  <xacro:property name="default_joint_velocity" value="1.0" />
+  <xacro:property name="default_joint_effort" value="1.0" /> <!-- As acceleration limit -->
+  <xacro:property name="pi" value="3.1415926535897931" />
+  <xacro:property name="pi2" value="pi / 2.0" />  
+
+  <link name="base_link">
+    <visual>
+	  <geometry>
+	    <mesh filename="${mesh_path}/base.dae" scale="${mesh_scale}"/>
+	  </geometry>
+    <xacro:mesh_origin/>
+	  <material name="base_link">
+        <color rgba="0.3 0.4 0.8 1"/>
+    </material>
+    </visual>
+    <collision>
+	  	<geometry>
+  	    <mesh filename="${mesh_path}/base_collision.dae" scale="${mesh_scale}"/>
+	  	</geometry>
+      <xacro:mesh_origin/>
+    </collision>    
+  </link>
+
+  <link name="link0">
+    <visual>
+      <geometry>
+   	    <mesh filename="${mesh_path}/l0.dae" scale="${mesh_scale}"/>
+      </geometry>
+      <xacro:mesh_origin/>
+      <material name="link">
+        <color rgba="0.8 0.8 0.8 1"/>
+      </material>
+    </visual>
+    <collision>
+	  	<geometry>
+        <mesh filename="${mesh_path}/l0_collision.dae" scale="${mesh_scale}"/>
+	  	</geometry>
+      <xacro:mesh_origin/>
+    </collision>
+  </link>
+
+  <joint name="J1" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="${default_joint_effort}" lower="${-(160.0/180.0) * pi}" upper="${(160.0/180.0) * pi}" velocity="${default_joint_velocity}"/>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.155"/>
+    <parent link="base_link"/>
+    <child link="link0"/>
+  </joint>
+
+  <link name="link1">
+    <visual>
+      <geometry>
+   	    <mesh filename="${mesh_path}/l1.dae" scale="${mesh_scale}"/>
+      </geometry>
+      <xacro:mesh_origin/>
+      <material name="link"/>
+    </visual>
+    <collision>
+     	<geometry>
+        <mesh filename="${mesh_path}/l1_collision.dae" scale="${mesh_scale}"/>
+	  	</geometry>
+      <xacro:mesh_origin/>	
+    </collision>    
+  </link>
+
+  <joint name="J2" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="${default_joint_effort}" lower="${-(120.0/180.0) * pi}" upper="${(120.0/180.0) * pi}" velocity="${default_joint_velocity}"/>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.125"/>
+    <parent link="link0"/>
+    <child link="link1"/>
+  </joint>
+
+  <link name="link2">
+    <visual>
+      <geometry>
+   	    <mesh filename="${mesh_path}/l2.dae" scale="${mesh_scale}"/>
+      </geometry>
+      <origin rpy="-1.570796 1.570796 0" xyz="0 0 0"/>
+	  <material name="link"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="${mesh_path}/l2_collision.dae" scale="${mesh_scale}"/>
+	  	</geometry>
+      <origin rpy="-1.570796 1.570796 0" xyz="0 0 0"/>
+    </collision>        
+  </link>
+ 	
+ <joint name="J3" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="${default_joint_effort}" lower="${(19.0/180.0) * pi}" upper="${(160.0/180.0) * pi}" velocity="${default_joint_velocity}"/>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.210"/>
+    <parent link="link1"/>
+    <child link="link2"/>
+  </joint>
+
+  <link name="link3">
+    <visual>
+    <geometry>
+      <mesh filename="${mesh_path}/l3.dae" scale="${mesh_scale}"/>
+    </geometry>
+    <origin rpy="0 1.570796 1.570796" xyz="0 0 0.085"/>
+		<material name="link"/>
+    </visual>
+    <collision>
+	  	<geometry>
+        <mesh filename="${mesh_path}/l3_collision.dae" scale="${mesh_scale}"/>
+	  	</geometry>
+      <origin rpy="0 1.570796 1.570796" xyz="0 0 0.085"/>
+    </collision>    
+  </link>
+
+  <joint name="J4" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="${default_joint_effort}" lower="${-(160.0/180.0) * pi}" upper="${(160.0/180.0) * pi}" velocity="${default_joint_velocity}"/>
+    <origin rpy="0 0 0" xyz="-0.075 0.0 0.0"/>
+    <parent link="link2"/>
+    <child link="link3"/>
+  </joint>
+
+  <link name="link4">
+    <visual>
+      <geometry>
+  			<mesh filename="${mesh_path}/l4.dae" scale="${mesh_scale}"/>
+      </geometry>
+    <origin rpy="0 1.570796 1.570796" xyz="0 0 0.0"/>
+	  <material name="link"/>
+    </visual>
+    <collision>
+	  	<geometry>
+        <mesh filename="${mesh_path}/l4_collision.dae" scale="${mesh_scale}"/>
+	  	</geometry>
+      <origin rpy="0 1.570796 1.570796" xyz="0 0 0.0"/>
+    </collision>    
+  </link>
+ 	
+  <joint name="J5" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="${default_joint_effort}" lower="${-(120.0/180.0) * pi}" upper="${(120.0/180.0) * pi}" velocity="${default_joint_velocity}"/>
+    <origin rpy="0 0 0" xyz="0.0 0.0 0.210"/>
+    <parent link="link3"/>
+    <child link="link4"/>
+  </joint>
+
+  <!--
+  <link name="link5">
+  <visual>
+    <geometry>
+      <cylinder length="0.01" radius="0.0205"/>
+    </geometry>
+    <origin rpy="0 -1.570796 0" xyz="0.0 0.0 0.0"/>
+    <material name="plate">
+      <color rgba="0.1 0.1 0.1 0.8"/>
+    </material>
+  </visual>
+  </link>
+ 	 -->
+
+  <link name="force_sensor">
+    <visual>
+      <geometry>
+  			<mesh filename="${mesh_path}/vp6242_force_sensor_soldering_lead.dae" scale="${mesh_scale}"/>
+      </geometry>
+    <origin rpy="1.570796 0 3.141592" xyz="0 0 0"/>
+	  <material name="link"/>
+    </visual>
+    <collision>
+	  	<geometry>
+        <mesh filename="${mesh_path}/vp6242_force_sensor_soldering_lead_collision.dae" scale="${mesh_scale}"/>
+	  	</geometry>
+      <origin rpy="1.570796 0 3.141592" xyz="0 0 0"/>
+    </collision>    
+  </link>
+
+  <joint name="J6" type="revolute">
+    <axis xyz="1 0 0"/>
+    <limit effort="${default_joint_effort}" lower="${-(360/180.0) * pi}" upper="${(360/180.0) * pi}" velocity="${default_joint_velocity}"/>
+    <origin rpy="0 -1.570796 0" xyz="0.0 0.0 0.07"/>
+    <parent link="link4"/>
+    <child link="force_sensor"/>
+  </joint>
+
+  <link name="lead_tip">
+   <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <sphere radius="0.0025"/>
+      </geometry>
+      <material name="tip">
+        <color rgba="1.0 0.0 0.0 0.5"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="wrist_to_lead_tip" type="fixed">
+    <axis xyz="1 0 0"/>
+    <origin rpy="0 0 0" xyz="0.145 0 0.0"/>
+    <parent link="force_sensor"/>
+    <child link="lead_tip"/>
+  </joint> 
+
+
+</robot>
